@@ -3,6 +3,8 @@ import '../../domain/entities/post.dart';
 import '../models/post_model.dart';
 
 class PostMapper implements BaseMapper<Post, PostModel> {
+  const PostMapper();
+
   @override
   PostModel toModel(Post entity) {
     return PostModel(id: entity.id, title: entity.title, body: entity.body);
