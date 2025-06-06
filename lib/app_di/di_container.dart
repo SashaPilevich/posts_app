@@ -2,6 +2,7 @@ import 'package:cherrypick/cherrypick.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:posts_app/features/posts_list/di/posts_di.dart';
 
+import '../navigation/app_router.dart';
 import '../network/dio_client.dart';
 
 class DIContainer {
@@ -11,10 +12,20 @@ class DIContainer {
 
   static Future<void> init() async {
     _scope = openRootScope().installModules([
+      AppRouterModule(),
       ExternalModule(),
       DioClientModule(),
       PostsDiModule(),
     ]);
+  }
+}
+
+class AppRouterModule extends Module {
+  @override
+  void builder(Scope currentScope) {
+    bind<AppRouter>().toInstance(
+      AppRouter(),
+    );
   }
 }
 

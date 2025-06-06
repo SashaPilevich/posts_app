@@ -6,6 +6,7 @@ import 'package:posts_app/features/posts_list/data/datasource/local/posts_local_
 
 import '../../../../common/data/models/post_model.dart';
 import '../../../../common/domain/entities/post.dart';
+import '../../../../core/data/mapper/base_mapper.dart';
 import '../../../../core/error/exception.dart';
 import '../../domain/repository/posts_repository.dart';
 import '../datasource/remote/posts_remote_data_source.dart';
@@ -14,13 +15,13 @@ class PostsRepositoryImpl implements PostsRepository {
   final InternetConnectionChecker _internetConnectionChecker;
   final PostsRemoteDataSource _remoteDataSource;
   final PostsLocalDataSource _localDataSource;
-  final PostMapper _postMapper;
+  final BaseMapper<Post, PostModel> _postMapper;
 
   PostsRepositoryImpl({
     required InternetConnectionChecker internetConnectionChecker,
     required PostsRemoteDataSource remoteDataSource,
     required PostsLocalDataSource localDataSource,
-    required PostMapper postMapper,
+    required BaseMapper<Post, PostModel> postMapper,
   }) : _internetConnectionChecker = internetConnectionChecker,
        _remoteDataSource = remoteDataSource,
        _localDataSource = localDataSource,

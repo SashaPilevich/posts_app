@@ -13,13 +13,35 @@ class PostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print('Post tapped: ${post.id}');
         context.read<PostsBloc>().add(OpenPostDetailsEvent(postId: post.id));
       },
       child: Container(
         padding: EdgeInsets.all(16),
+        margin: EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Theme.of(context).hintColor.withAlpha(26),
+              blurRadius: 2,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
-          children: <Widget>[Text(post.title), Text(post.body)],
+          children: <Widget>[
+            Text(post.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              post.body,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 14),
+            ),
+          ],
         ),
       ),
     );

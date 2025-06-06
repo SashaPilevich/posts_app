@@ -4,10 +4,9 @@ import 'package:posts_app/core/error/exception.dart';
 import 'package:posts_app/features/posts_list/data/datasource/local/posts_local_data_source.dart';
 
 class PostsLocalDataSourceImpl implements PostsLocalDataSource {
-  late Box<List<PostModel>> _postsBox;
+  late Box<PostModel> _postsBox;
   final String _key = 'posts';
 
-  //call this method in di after registration
   @override
   Future<void> init() async {
     Hive.registerAdapter(PostModelAdapter());
@@ -17,7 +16,7 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
   @override
   Future<List<PostModel>> fetchPosts() async {
     try {
-      final List<PostModel> posts = _postsBox.get(_key) ?? <PostModel>[];
+      final List<PostModel> posts = _postsBox.values.toList();
       if (posts.isEmpty) {
         throw CacheException();
       }
@@ -30,7 +29,7 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
   @override
   Future<void> savePosts(List<PostModel> posts) async {
     try {
-      await _postsBox.put(_key, posts);
+      await _postsBox.putAll({for (var post in posts) post.id: post});
     } catch (e) {
       throw CacheException();
     }
@@ -43,7 +42,6 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
 
   @override
   Future<bool> hasPosts() async {
-    return _postsBox.containsKey(_key) &&
-        (_postsBox.get(_key)?.isNotEmpty ?? false);
+    return _postsBox.values.toList().isNotEmpty;
   }
 }

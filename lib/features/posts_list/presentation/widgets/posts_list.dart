@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posts_app/features/posts_list/presentation/widgets/post_item.dart';
 
 import '../../../../common/domain/entities/post.dart';
 
@@ -9,6 +10,14 @@ class PostsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: );
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      itemCount: posts.length,
+      itemBuilder: (BuildContext context, int index) {
+        final Post post = posts[index];
+        return PostItem(post: post);
+      },
+    );
   }
 }

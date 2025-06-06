@@ -14,6 +14,6 @@ abstract class PostModel with _$PostModel {
     @HiveField(2) @Default('') String body,
   }) = _PostModel;
 
-  factory PostModel.fromJson(Map<String, dynamic> json) =>
+  factory PostModel.fromJson(Map<String, Object?> json) =>
       _$PostModelFromJson(json);
 }

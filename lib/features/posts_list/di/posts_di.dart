@@ -9,7 +9,6 @@ import 'package:posts_app/features/posts_list/data/repository/posts_repository_i
 import 'package:posts_app/features/posts_list/domain/repository/posts_repository.dart';
 import 'package:posts_app/features/posts_list/domain/usecase/get_posts_list_usecase.dart';
 import 'package:posts_app/network/dio_client.dart';
-
 import '../../../common/data/mapper/post_mapper.dart';
 import '../../../common/data/models/post_model.dart';
 import '../../../common/domain/entities/post.dart';
@@ -26,20 +25,16 @@ class PostsDiModule extends Module {
   }
 
   void _bindMappers(Scope scope) {
-    bind<BaseMapper<Post, PostModel>>().toInstance(const PostMapper());
+    bind<BaseMapper<Post, PostModel>>().toInstance(PostMapper());
   }
 
   void _bindApiService(Scope scope) {
-    bind<PostsApiService>().toInstance(
-      PostsApiService(scope.resolve<DioClient>().dio),
-    );
+    bind<PostsApiService>().toInstance(PostsApiService(scope.resolve<DioClient>().dio));
   }
 
   void _bindDataSources(Scope scope) {
     bind<PostsRemoteDataSource>().toInstance(
-      PostsRemoteDataSourceImpl(
-        postsApiService: scope.resolve<PostsApiService>(),
-      ),
+      PostsRemoteDataSourceImpl(postsApiService: scope.resolve<PostsApiService>()),
     );
 
     bind<PostsLocalDataSource>().toInstance(PostsLocalDataSourceImpl());
@@ -52,7 +47,7 @@ class PostsDiModule extends Module {
         internetConnectionChecker: scope.resolve<InternetConnectionChecker>(),
         remoteDataSource: scope.resolve<PostsRemoteDataSource>(),
         localDataSource: scope.resolve<PostsLocalDataSource>(),
-        postMapper: scope.resolve<PostMapper>(),
+        postMapper: scope.resolve<BaseMapper<Post, PostModel>>(),
       ),
     );
   }

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 
 class EmptyStateContent extends StatelessWidget {
-  const EmptyStateContent({super.key});
+  final String title;
+
+  const EmptyStateContent({required this.title, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Center(
+      child: Text(
+        title,
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+      ),
+    );
   }
 }

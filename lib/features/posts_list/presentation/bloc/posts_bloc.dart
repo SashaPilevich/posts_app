@@ -16,7 +16,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   PostsBloc({required GetPostsUseCase getPostsUseCase})
     : _getPostsUseCase = getPostsUseCase,
-      super(Empty()) {
+      super(Loading()) {
     on<InitEvent>(_onInit);
     on<OpenPostDetailsEvent>(_onOpenPostDetails);
 
@@ -25,19 +25,14 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Future<void> _onInit(InitEvent event, Emitter<PostsState> emit) async {
     emit(Loading());
-    final Either<Failure, List<Post>> result = await _getPostsUseCase(
-      NoParams(),
-    );
+    final Either<Failure, List<Post>> result = await _getPostsUseCase(NoParams());
     result.fold(
       (failure) => emit(Error(message: '')),
-      (posts) => emit(Loaded(posts: posts)),
+      (posts) => emit(posts.isNotEmpty ? Loaded(posts: posts) : Empty()),
     );
   }
 
-  Future<void> _onOpenPostDetails(
-    OpenPostDetailsEvent event,
-    Emitter<PostsState> emit,
-  ) async {
+  Future<void> _onOpenPostDetails(OpenPostDetailsEvent event, Emitter<PostsState> emit) async {
     // Handle opening post details
   }
 }
