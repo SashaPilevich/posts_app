@@ -5,14 +5,14 @@ import '../../../../common/domain/entities/post.dart';
 import '../../../../core/error/failures.dart';
 import '../repository/post_details_repository.dart';
 
-class GetPostDetailsUseCase implements FutureUseCase<Post, String> {
+class GetPostDetailsUseCase implements FutureUseCase<Post, int> {
   final PostDetailsRepository _repository;
 
   GetPostDetailsUseCase({required PostDetailsRepository repository})
     : _repository = repository;
 
   @override
-  Future<Either<Failure, Post>> call(String postId) async {
+  Future<Either<Failure, Post>> call(int postId) async {
     return _repository.getPostDetails(postId);
   }
 }
