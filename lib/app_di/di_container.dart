@@ -34,7 +34,7 @@ class AppRouterModule extends Module {
 class DioClientModule extends Module {
   @override
   void builder(Scope currentScope) {
-    bind<DioClient>().toInstance(DioClient(baseUrl: ApiConstants.baseUrl));
+    bind<DioClient>().toProvide(() => DioClient(baseUrl: ApiConstants.baseUrl));
   }
 }
 
