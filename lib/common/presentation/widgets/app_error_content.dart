@@ -10,9 +10,9 @@ class AppErrorContent extends StatelessWidget {
     return Center(
       child: Text(
         errorMessage,
-        style: Theme.of(
-          context,
-        ).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
       ),
     );
   }

@@ -10,9 +10,9 @@ class EmptyStateContent extends StatelessWidget {
     return Center(
       child: Text(
         title,
-        style: Theme.of(
-          context,
-        ).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
       ),
     );
   }

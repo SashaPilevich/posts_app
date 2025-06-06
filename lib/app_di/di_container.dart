@@ -23,9 +23,7 @@ class DIContainer {
 class AppRouterModule extends Module {
   @override
   void builder(Scope currentScope) {
-    bind<AppRouter>().toInstance(
-      AppRouter(),
-    );
+    bind<AppRouter>().toInstance(AppRouter());
   }
 }
 

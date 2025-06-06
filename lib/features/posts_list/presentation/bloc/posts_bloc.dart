@@ -8,7 +8,6 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/usecase.dart';
 
 part 'posts_event.dart';
-
 part 'posts_state.dart';
 
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
@@ -25,14 +24,20 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Future<void> _onInit(InitEvent event, Emitter<PostsState> emit) async {
     emit(Loading());
-    final Either<Failure, List<Post>> result = await _getPostsUseCase(NoParams());
+    final Either<Failure, List<Post>> result = await _getPostsUseCase(
+      NoParams(),
+    );
     result.fold(
-      (failure) => emit(Error(message: '')),
+      (failure) =>
+          emit(Error(message: 'An error occurred. Please try again later.')),
       (posts) => emit(posts.isNotEmpty ? Loaded(posts: posts) : Empty()),
     );
   }
 
-  Future<void> _onOpenPostDetails(OpenPostDetailsEvent event, Emitter<PostsState> emit) async {
-    // Handle opening post details
+  Future<void> _onOpenPostDetails(
+    OpenPostDetailsEvent event,
+    Emitter<PostsState> emit,
+  ) async {
+    /// TODO: navigate to postDetails
   }
 }

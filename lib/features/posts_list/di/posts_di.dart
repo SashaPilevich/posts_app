@@ -9,6 +9,7 @@ import 'package:posts_app/features/posts_list/data/repository/posts_repository_i
 import 'package:posts_app/features/posts_list/domain/repository/posts_repository.dart';
 import 'package:posts_app/features/posts_list/domain/usecase/get_posts_list_usecase.dart';
 import 'package:posts_app/network/dio_client.dart';
+
 import '../../../common/data/mapper/post_mapper.dart';
 import '../../../common/data/models/post_model.dart';
 import '../../../common/domain/entities/post.dart';
@@ -29,12 +30,16 @@ class PostsDiModule extends Module {
   }
 
   void _bindApiService(Scope scope) {
-    bind<PostsApiService>().toInstance(PostsApiService(scope.resolve<DioClient>().dio));
+    bind<PostsApiService>().toInstance(
+      PostsApiService(scope.resolve<DioClient>().dio),
+    );
   }
 
   void _bindDataSources(Scope scope) {
     bind<PostsRemoteDataSource>().toInstance(
-      PostsRemoteDataSourceImpl(postsApiService: scope.resolve<PostsApiService>()),
+      PostsRemoteDataSourceImpl(
+        postsApiService: scope.resolve<PostsApiService>(),
+      ),
     );
 
     bind<PostsLocalDataSource>().toInstance(PostsLocalDataSourceImpl());

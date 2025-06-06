@@ -29,7 +29,9 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
   @override
   Future<void> savePosts(List<PostModel> posts) async {
     try {
-      await _postsBox.putAll({for (var post in posts) post.id: post});
+      await _postsBox.putAll({
+        for (final PostModel post in posts) post.id: post,
+      });
     } catch (e) {
       throw CacheException();
     }

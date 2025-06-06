@@ -13,7 +13,6 @@ class PostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('Post tapped: ${post.id}');
         context.read<PostsBloc>().add(OpenPostDetailsEvent(postId: post.id));
       },
       child: Container(
@@ -34,7 +33,10 @@ class PostItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
           children: <Widget>[
-            Text(post.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              post.title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             Text(
               post.body,
               maxLines: 1,

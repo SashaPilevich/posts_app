@@ -30,7 +30,7 @@ class PostsContent extends StatelessWidget {
               } else if (state is Loaded) {
                 return PostsList(posts: state.posts);
               } else if (state is Error) {
-                return AppErrorContent(errorMessage: 'An error occurred. Please try again later.');
+                return AppErrorContent(errorMessage: state.message);
               }
               return SizedBox.shrink();
             },

@@ -14,7 +14,9 @@ class PostsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PostsBloc>(
       create: (BuildContext context) {
-        return PostsBloc(getPostsUseCase: DIContainer.scope.resolve<GetPostsUseCase>());
+        return PostsBloc(
+          getPostsUseCase: DIContainer.scope.resolve<GetPostsUseCase>(),
+        );
       },
       child: PostsContent(),
     );
