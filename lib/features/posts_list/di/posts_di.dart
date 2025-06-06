@@ -43,31 +43,27 @@ class PostsDiModule extends Module {
       ),
     );
 
-    bind<PostsLocalDataSource>().toProvideAsync(() async {
-      return PostsLocalDataSourceImpl(
-        sharedPreferences: await scope.resolveAsync<SharedPreferences>(),
-      );
-    });
+    bind<PostsLocalDataSource>().toProvide(
+      () => PostsLocalDataSourceImpl(
+        sharedPreferences: scope.resolve<SharedPreferences>(),
+      ),
+    );
   }
 
   void _bindRepositories(Scope scope) {
-    bind<PostsRepository>().toProvideAsync(() async {
-      final PostsLocalDataSource localDataSource = await scope
-          .resolveAsync<PostsLocalDataSource>();
-      return PostsRepositoryImpl(
+    bind<PostsRepository>().toProvide(
+      () => PostsRepositoryImpl(
         internetConnectionChecker: scope.resolve<InternetConnectionChecker>(),
         remoteDataSource: scope.resolve<PostsRemoteDataSource>(),
-        localDataSource: localDataSource,
+        localDataSource: scope.resolve<PostsLocalDataSource>(),
         postMapper: scope.resolve<BaseMapper<Post, PostModel>>(),
-      );
-    });
+      ),
+    );
   }
 
-  Future<void> _bindUseCases(Scope scope) async {
-    final PostsRepository postsRepository = await scope
-        .resolveAsync<PostsRepository>();
-    bind<GetPostsUseCase>().toInstance(
-      GetPostsUseCase(repository: postsRepository),
+  void _bindUseCases(Scope scope) {
+    bind<GetPostsUseCase>().toProvide(
+      () => GetPostsUseCase(repository: scope.resolve<PostsRepository>()),
     );
   }
 }
