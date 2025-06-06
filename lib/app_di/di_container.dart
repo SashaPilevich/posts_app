@@ -13,9 +13,11 @@ class DIContainer {
   static late final Scope _scope;
 
   static Future<void> init() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     _scope = openRootScope().installModules([
       AppRouterModule(),
-      ExternalModule(),
+      ExternalModule(sharedPreferences: sharedPreferences),
       DioClientModule(),
       PostsDiModule(),
     ]);
@@ -37,13 +39,15 @@ class DioClientModule extends Module {
 }
 
 class ExternalModule extends Module {
+  final SharedPreferences sharedPreferences;
+
+  ExternalModule({required this.sharedPreferences});
+
   @override
   void builder(Scope currentScope) {
     bind<InternetConnectionChecker>().toInstance(
       InternetConnectionChecker.instance,
     );
-    bind<SharedPreferences>().toProvideAsync(() async {
-      return await SharedPreferences.getInstance();
-    });
+    bind<SharedPreferences>().toInstance(sharedPreferences);
   }
 }
