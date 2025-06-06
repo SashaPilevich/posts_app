@@ -9,6 +9,7 @@ import 'package:posts_app/features/posts_list/data/repository/posts_repository_i
 import 'package:posts_app/features/posts_list/domain/repository/posts_repository.dart';
 import 'package:posts_app/features/posts_list/domain/usecase/get_posts_list_usecase.dart';
 import 'package:posts_app/network/dio_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/data/mapper/post_mapper.dart';
 import '../../../common/data/models/post_model.dart';
@@ -42,13 +43,16 @@ class PostsDiModule extends Module {
       ),
     );
 
-    bind<PostsLocalDataSource>().toInstance(PostsLocalDataSourceImpl());
-    scope.resolve<PostsLocalDataSource>().init();
+    bind<PostsLocalDataSource>().toProvide(
+      () => PostsLocalDataSourceImpl(
+        sharedPreferences: scope.resolve<SharedPreferences>(),
+      ),
+    );
   }
 
   void _bindRepositories(Scope scope) {
-    bind<PostsRepository>().toInstance(
-      PostsRepositoryImpl(
+    bind<PostsRepository>().toProvide(
+      () => PostsRepositoryImpl(
         internetConnectionChecker: scope.resolve<InternetConnectionChecker>(),
         remoteDataSource: scope.resolve<PostsRemoteDataSource>(),
         localDataSource: scope.resolve<PostsLocalDataSource>(),
@@ -58,8 +62,8 @@ class PostsDiModule extends Module {
   }
 
   void _bindUseCases(Scope scope) {
-    bind<GetPostsUseCase>().toInstance(
-      GetPostsUseCase(repository: scope.resolve<PostsRepository>()),
+    bind<GetPostsUseCase>().toProvide(
+      () => GetPostsUseCase(repository: scope.resolve<PostsRepository>()),
     );
   }
 }

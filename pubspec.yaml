@@ -32,8 +32,6 @@ dependencies:
   auto_route: ^9.3.0
 
   #storages
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   shared_preferences: ^2.5.3
 
   #error handling
@@ -48,7 +46,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   retrofit_generator: ^9.1.9
   json_serializable: ^6.9.0
-  hive_generator: ^2.0.1
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.15
 

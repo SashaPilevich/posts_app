@@ -10,6 +10,10 @@ import '../../../../core/usecase/usecase.dart';
 part 'posts_event.dart';
 part 'posts_state.dart';
 
+const String serverFailureMessage =
+    'An error occurred. Please try again later.';
+const String cacheFailureMessage = 'An error occurred. Please try again later.';
+
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final GetPostsUseCase _getPostsUseCase;
 
@@ -28,8 +32,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       NoParams(),
     );
     result.fold(
-      (failure) =>
-          emit(Error(message: 'An error occurred. Please try again later.')),
+      (failure) => emit(Error(message: _mapFailureToMessage(failure))),
       (posts) => emit(posts.isNotEmpty ? Loaded(posts: posts) : Empty()),
     );
   }
@@ -39,5 +42,16 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     Emitter<PostsState> emit,
   ) async {
     /// TODO: navigate to postDetails
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    switch (failure.runtimeType) {
+      case ServerFailure:
+        return serverFailureMessage;
+      case CacheFailure:
+        return cacheFailureMessage;
+      default:
+        return 'Unexpected Error';
+    }
   }
 }
