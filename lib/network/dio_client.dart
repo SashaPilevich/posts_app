@@ -14,6 +14,10 @@ class DioClient {
       baseUrl: baseUrl,
       connectTimeout: connectTimeout,
       receiveTimeout: receiveTimeout,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
     );
 
     _dio.interceptors.add(DioLoggerInterceptor());

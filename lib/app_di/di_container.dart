@@ -1,0 +1,46 @@
+import 'package:cherrypick/cherrypick.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:posts_app/features/posts_list/di/posts_di.dart';
+
+import '../navigation/app_router.dart';
+import '../network/dio_client.dart';
+
+class DIContainer {
+  static Scope get scope => _scope;
+
+  static late final Scope _scope;
+
+  static Future<void> init() async {
+    _scope = openRootScope().installModules([
+      AppRouterModule(),
+      ExternalModule(),
+      DioClientModule(),
+      PostsDiModule(),
+    ]);
+  }
+}
+
+class AppRouterModule extends Module {
+  @override
+  void builder(Scope currentScope) {
+    bind<AppRouter>().toInstance(AppRouter());
+  }
+}
+
+class DioClientModule extends Module {
+  @override
+  void builder(Scope currentScope) {
+    bind<DioClient>().toProvide(
+      () => DioClient(baseUrl: 'https://jsonplaceholder.typicode.com/'),
+    );
+  }
+}
+
+class ExternalModule extends Module {
+  @override
+  void builder(Scope currentScope) {
+    bind<InternetConnectionChecker>().toProvide(
+      () => InternetConnectionChecker.instance,
+    );
+  }
+}
