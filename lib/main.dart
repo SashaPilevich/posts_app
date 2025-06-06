@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 
 import 'app_di/di_container.dart';
 import 'navigation/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
   await DIContainer.init();
   runApp(const MyApp());
 }

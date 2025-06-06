@@ -1,27 +1,31 @@
-import 'package:hive/hive.dart';
+import 'dart:convert';
+
 import 'package:posts_app/common/data/models/post_model.dart';
 import 'package:posts_app/core/error/exception.dart';
 import 'package:posts_app/features/posts_list/data/datasource/local/posts_local_data_source.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PostsLocalDataSourceImpl implements PostsLocalDataSource {
-  late Box<PostModel> _postsBox;
-  final String _key = 'posts';
+  final SharedPreferences _sharedPreferences;
+  final String _postsListKey = 'posts_list';
 
-  @override
-  Future<void> init() async {
-    Hive.registerAdapter(PostModelAdapter());
-    _postsBox = await Hive.openBox(_key);
-  }
+  PostsLocalDataSourceImpl({required SharedPreferences sharedPreferences})
+    : _sharedPreferences = sharedPreferences;
 
   @override
   Future<List<PostModel>> fetchPosts() async {
     try {
-      final List<PostModel> posts = _postsBox.values.toList();
-      if (posts.isEmpty) {
-        throw CacheException();
+      List<String>? jsonStringList = _sharedPreferences.getStringList(
+        _postsListKey,
+      );
+
+      if (jsonStringList != null) {
+        return jsonStringList
+            .map((jsonString) => PostModel.fromJson(jsonDecode(jsonString)))
+            .toList();
       }
-      return posts;
-    } catch (e) {
+      return [];
+    } catch (_) {
       throw CacheException();
     }
   }
@@ -29,21 +33,18 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
   @override
   Future<void> savePosts(List<PostModel> posts) async {
     try {
-      await _postsBox.putAll({
-        for (final PostModel post in posts) post.id: post,
-      });
-    } catch (e) {
+      List<String> jsonStringList = posts
+          .map((post) => jsonEncode(post.toJson()))
+          .toList();
+      await _sharedPreferences.setStringList(_postsListKey, jsonStringList);
+    } catch (_) {
       throw CacheException();
     }
   }
 
   @override
-  Future<void> clearPosts() async {
-    await _postsBox.clear();
-  }
-
-  @override
   Future<bool> hasPosts() async {
-    return _postsBox.values.toList().isNotEmpty;
+    return _sharedPreferences.containsKey(_postsListKey) &&
+        _sharedPreferences.getStringList(_postsListKey)?.isNotEmpty == true;
   }
 }
