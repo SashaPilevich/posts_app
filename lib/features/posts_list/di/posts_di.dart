@@ -9,6 +9,7 @@ import 'package:posts_app/features/posts_list/data/repository/posts_repository_i
 import 'package:posts_app/features/posts_list/domain/repository/posts_repository.dart';
 import 'package:posts_app/features/posts_list/domain/usecase/get_posts_list_usecase.dart';
 import 'package:posts_app/network/dio_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/data/mapper/post_mapper.dart';
 import '../../../common/data/models/post_model.dart';
@@ -42,24 +43,31 @@ class PostsDiModule extends Module {
       ),
     );
 
-    bind<PostsLocalDataSource>().toInstance(PostsLocalDataSourceImpl());
-    scope.resolve<PostsLocalDataSource>().init();
+    bind<PostsLocalDataSource>().toProvideAsync(() async {
+      return PostsLocalDataSourceImpl(
+        sharedPreferences: await scope.resolveAsync<SharedPreferences>(),
+      );
+    });
   }
 
   void _bindRepositories(Scope scope) {
-    bind<PostsRepository>().toInstance(
-      PostsRepositoryImpl(
+    bind<PostsRepository>().toProvideAsync(() async {
+      final PostsLocalDataSource localDataSource = await scope
+          .resolveAsync<PostsLocalDataSource>();
+      return PostsRepositoryImpl(
         internetConnectionChecker: scope.resolve<InternetConnectionChecker>(),
         remoteDataSource: scope.resolve<PostsRemoteDataSource>(),
-        localDataSource: scope.resolve<PostsLocalDataSource>(),
+        localDataSource: localDataSource,
         postMapper: scope.resolve<BaseMapper<Post, PostModel>>(),
-      ),
-    );
+      );
+    });
   }
 
-  void _bindUseCases(Scope scope) {
+  Future<void> _bindUseCases(Scope scope) async {
+    final PostsRepository postsRepository = await scope
+        .resolveAsync<PostsRepository>();
     bind<GetPostsUseCase>().toInstance(
-      GetPostsUseCase(repository: scope.resolve<PostsRepository>()),
+      GetPostsUseCase(repository: postsRepository),
     );
   }
 }

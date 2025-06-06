@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:posts_app/common/data/mapper/post_mapper.dart';
 import 'package:posts_app/core/error/failures.dart';
 import 'package:posts_app/features/posts_list/data/datasource/local/posts_local_data_source.dart';
 
@@ -38,7 +37,7 @@ class PostsRepositoryImpl implements PostsRepository {
           await _localDataSource.savePosts(posts);
         }
         return Right(posts.map((post) => _postMapper.toEntity(post)).toList());
-      } on ServerException catch (e) {
+      } on ServerException {
         return Left(ServerFailure());
       }
     } else {
@@ -47,7 +46,7 @@ class PostsRepositoryImpl implements PostsRepository {
         return Right(
           cachedPost.map((post) => _postMapper.toEntity(post)).toList(),
         );
-      } on CacheException catch (e) {
+      } on CacheException {
         return Left(CacheFailure());
       }
     }
