@@ -7,6 +7,8 @@ abstract class PostsEvent extends Equatable {
 
 class InitEvent extends PostsEvent {}
 
+class RefreshEvent extends PostsEvent {}
+
 class OpenPostDetailsEvent extends PostsEvent {
   final int postId;
 

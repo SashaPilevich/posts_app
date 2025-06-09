@@ -34,7 +34,10 @@ class PostItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
           children: <Widget>[
-            Text(post.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              post.title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             AnimatedPostText(text: post.body),
           ],
         ),

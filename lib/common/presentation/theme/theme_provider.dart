@@ -29,7 +29,7 @@ class ThemeProvider with ChangeNotifier {
     );
     theme.fold(
       (failure) {
-        return _themeMode = ThemeMode.light;
+        return _themeMode = ThemeMode.dark;
       },
       (theme) {
         _setThemeMode(theme);

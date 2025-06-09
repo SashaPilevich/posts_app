@@ -18,7 +18,8 @@ class PostDetailsPage extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) {
         return PostDetailsBloc(
-          getPostDetailsUseCase: DIContainer.scope.resolve<GetPostDetailsUseCase>(),
+          getPostDetailsUseCase: DIContainer.scope
+              .resolve<GetPostDetailsUseCase>(),
         )..add(InitEvent(postId: postId));
       },
       child: PostDetailsContent(),
