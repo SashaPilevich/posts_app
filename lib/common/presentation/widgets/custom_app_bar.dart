@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../domain/entities/app_theme.dart';
+import '../theme/theme_provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -27,7 +31,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       backgroundColor: Colors.transparent,
       actions: <Widget>[
-        Switch(value: true, onChanged: (_) {}),
+        Switch(
+          value: context.watch<ThemeProvider>().themeMode == ThemeMode.dark,
+          onChanged: (bool isDarkTheme) {
+            final ThemeProvider themeProvider = context.read<ThemeProvider>();
+            themeProvider.setTheme(
+              isDarkTheme ? AppTheme.dark : AppTheme.light,
+            );
+          },
+        ),
         SizedBox(width: 16),
       ],
     );
