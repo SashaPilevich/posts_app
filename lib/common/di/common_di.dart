@@ -15,29 +15,41 @@ class CommonDiModule extends Module {
     _bindUseCases(currentScope);
   }
 
-  _bindDataSources(Scope scope) {
-    bind<ThemeLocalDataSource>().toProvide(
-      () => ThemeLocalDataSourceImpl(
-        sharedPreferences: scope.resolve<SharedPreferences>(),
-      ),
-    );
+  _bindDataSources(Scope currentScope) {
+    bind<ThemeLocalDataSource>()
+        .toProvide(
+          () => ThemeLocalDataSourceImpl(
+            sharedPreferences: currentScope.resolve<SharedPreferences>(),
+          ),
+        )
+        .singleton();
   }
 
-  _bindRepositories(Scope scope) {
-    bind<ThemeRepository>().toProvide(
-      () => ThemeRepositoryImpl(
-        themeLocalDataSource: scope.resolve<ThemeLocalDataSource>(),
-      ),
-    );
+  _bindRepositories(Scope currentScope) {
+    bind<ThemeRepository>()
+        .toProvide(
+          () => ThemeRepositoryImpl(
+            themeLocalDataSource: currentScope.resolve<ThemeLocalDataSource>(),
+          ),
+        )
+        .singleton();
   }
 
-  _bindUseCases(Scope scope) {
-    bind<SetThemeUseCase>().toProvide(
-      () => SetThemeUseCase(repository: scope.resolve<ThemeRepository>()),
-    );
+  _bindUseCases(Scope currentScope) {
+    bind<SetThemeUseCase>()
+        .toProvide(
+          () => SetThemeUseCase(
+            repository: currentScope.resolve<ThemeRepository>(),
+          ),
+        )
+        .singleton();
 
-    bind<GetThemeUseCase>().toProvide(
-      () => GetThemeUseCase(repository: scope.resolve<ThemeRepository>()),
-    );
+    bind<GetThemeUseCase>()
+        .toProvide(
+          () => GetThemeUseCase(
+            repository: currentScope.resolve<ThemeRepository>(),
+          ),
+        )
+        .singleton();
   }
 }
