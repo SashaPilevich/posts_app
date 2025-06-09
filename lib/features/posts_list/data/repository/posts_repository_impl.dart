@@ -31,7 +31,6 @@ class PostsRepositoryImpl implements PostsRepository {
     final bool isConnected = await _internetConnectionChecker.hasConnection;
     if (isConnected) {
       try {
-        print('PostsRepositoryImpl: Fetching posts from remote data source');
         final List<PostModel> posts = await _remoteDataSource.fetchPosts();
         final bool hasCachedPosts = await _localDataSource.hasPosts();
         if (!hasCachedPosts) {
@@ -44,7 +43,9 @@ class PostsRepositoryImpl implements PostsRepository {
     } else {
       try {
         final List<PostModel> cachedPost = await _localDataSource.fetchPosts();
-        return Right(cachedPost.map((post) => _postMapper.toEntity(post)).toList());
+        return Right(
+          cachedPost.map((post) => _postMapper.toEntity(post)).toList(),
+        );
       } on CacheException {
         return Left(CacheFailure());
       }

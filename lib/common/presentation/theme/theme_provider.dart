@@ -45,6 +45,13 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void _setThemeMode(AppTheme theme) {
-    _themeMode = theme == AppTheme.light ? ThemeMode.light : ThemeMode.dark;
+    switch (theme) {
+      case AppTheme.light:
+        _themeMode = ThemeMode.light;
+        break;
+      case AppTheme.dark:
+        _themeMode = ThemeMode.dark;
+        break;
+    }
   }
 }
