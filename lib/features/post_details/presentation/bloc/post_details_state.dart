@@ -5,23 +5,23 @@ class PostDetailsState extends Equatable {
   List<Object?> get props => [];
 }
 
-class Empty extends PostDetailsState {}
+class PostDetailsEmpty extends PostDetailsState {}
 
-class Loading extends PostDetailsState {}
+class PostDetailsLoading extends PostDetailsState {}
 
-class Loaded extends PostDetailsState {
+class PostDetailsLoaded extends PostDetailsState {
   final Post post;
 
-  Loaded({required this.post});
+  PostDetailsLoaded({required this.post});
 
   @override
   List<Object?> get props => [post];
 }
 
-class Error extends PostDetailsState {
+class PostDetailsError extends PostDetailsState {
   final String message;
 
-  Error({required this.message});
+  PostDetailsError({required this.message});
 
   @override
   List<Object?> get props => [message];

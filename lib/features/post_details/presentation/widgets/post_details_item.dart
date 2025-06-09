@@ -11,7 +11,8 @@ class PostDetailsItem extends StatefulWidget {
   State<PostDetailsItem> createState() => _PostDetailsItemState();
 }
 
-class _PostDetailsItemState extends State<PostDetailsItem> with SingleTickerProviderStateMixin {
+class _PostDetailsItemState extends State<PostDetailsItem>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> titleOpacity;
   late Animation<double> titleScale;
@@ -21,7 +22,10 @@ class _PostDetailsItemState extends State<PostDetailsItem> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(duration: const Duration(milliseconds: 600), vsync: this);
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
 
     titleOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -64,7 +68,7 @@ class _PostDetailsItemState extends State<PostDetailsItem> with SingleTickerProv
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller,
-      builder: (context, child) {
+      builder: (BuildContext context, _) {
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -74,7 +78,10 @@ class _PostDetailsItemState extends State<PostDetailsItem> with SingleTickerProv
                 opacity: titleOpacity.value,
                 child: ScaleTransition(
                   scale: titleScale,
-                  child: Text(widget.post.title, style: Theme.of(context).textTheme.titleLarge),
+                  child: Text(
+                    widget.post.title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
               ),
               const SizedBox(height: 8.0),
@@ -82,7 +89,10 @@ class _PostDetailsItemState extends State<PostDetailsItem> with SingleTickerProv
                 opacity: bodyOpacity.value,
                 child: ScaleTransition(
                   scale: bodyScale,
-                  child: Text(widget.post.body, style: Theme.of(context).textTheme.bodyMedium),
+                  child: Text(
+                    widget.post.body,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
               ),
             ],

@@ -11,7 +11,6 @@ class PostsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap: true,
       padding: EdgeInsets.zero,
       itemCount: posts.length,
       itemBuilder: (BuildContext context, int index) {
