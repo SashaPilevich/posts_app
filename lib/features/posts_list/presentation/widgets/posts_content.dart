@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posts_app/features/posts_list/presentation/widgets/posts_list.dart';
 
-import '../../../../common/presentation/widgets/app_empty_state_content.dart';
-import '../../../../common/presentation/widgets/app_error_content.dart';
-import '../../../../common/presentation/widgets/app_loader.dart';
-import '../../../../common/presentation/widgets/custom_app_bar.dart';
+import '../../../../common/presentation/widgets/widgets.dart';
 import '../bloc/posts_bloc.dart';
 
 class PostsContent extends StatelessWidget {
@@ -14,7 +11,7 @@ class PostsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Posts List', showBackButton: false),
+      appBar: CustomAppBar(title: 'Posts List'),
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<PostsBloc>().add(InitEvent());

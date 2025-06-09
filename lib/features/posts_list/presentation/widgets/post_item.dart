@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/domain/entities/post.dart';
 import '../bloc/posts_bloc.dart';
+import 'animated_post_text.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
@@ -33,16 +34,8 @@ class PostItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,
           children: <Widget>[
-            Text(
-              post.title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              post.body,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 14),
-            ),
+            Text(post.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            AnimatedPostText(text: post.body),
           ],
         ),
       ),

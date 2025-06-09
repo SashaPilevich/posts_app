@@ -1,11 +1,11 @@
-import 'package:equatable/equatable.dart';
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 
 import '../error/failures.dart';
 
 /// An abstract class representing a future use case in the domain layer.
-abstract class FutureUseCase<Type, Params> {
-  Future<Either<Failure, Type>> call(Params params);
+abstract class FutureUseCase<Input, Output> {
+  Future<Either<Failure, Output>> execute(Input input);
 }
 
 /// A class representing no parameters.
