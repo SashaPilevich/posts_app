@@ -24,43 +24,52 @@ class PostsDiModule extends Module {
   }
 
   void _bindMappers(Scope scope) {
-    bind<PostMapper>().toProvide(() => PostMapper());
+    bind<PostMapper>().toProvide(() => PostMapper()).singleton();
   }
 
   void _bindApiService(Scope scope) {
-    bind<PostsApiService>().toProvide(
-      () => PostsApiService(scope.resolve<DioClient>().dio),
-    );
+    bind<PostsApiService>()
+        .toProvide(() => PostsApiService(scope.resolve<DioClient>().dio))
+        .singleton();
   }
 
   void _bindDataSources(Scope scope) {
-    bind<PostsRemoteDataSource>().toProvide(
-      () => PostsRemoteDataSourceImpl(
-        postsApiService: scope.resolve<PostsApiService>(),
-      ),
-    );
+    bind<PostsRemoteDataSource>()
+        .toProvide(
+          () => PostsRemoteDataSourceImpl(
+            postsApiService: scope.resolve<PostsApiService>(),
+          ),
+        )
+        .singleton();
 
-    bind<PostsLocalDataSource>().toProvide(
-      () => PostsLocalDataSourceImpl(
-        sharedPreferences: scope.resolve<SharedPreferences>(),
-      ),
-    );
+    bind<PostsLocalDataSource>()
+        .toProvide(
+          () => PostsLocalDataSourceImpl(
+            sharedPreferences: scope.resolve<SharedPreferences>(),
+          ),
+        )
+        .singleton();
   }
 
   void _bindRepositories(Scope scope) {
-    bind<PostsRepository>().toProvide(
-      () => PostsRepositoryImpl(
-        internetConnectionChecker: scope.resolve<InternetConnectionChecker>(),
-        remoteDataSource: scope.resolve<PostsRemoteDataSource>(),
-        localDataSource: scope.resolve<PostsLocalDataSource>(),
-        postMapper: scope.resolve<PostMapper>(),
-      ),
-    );
+    bind<PostsRepository>()
+        .toProvide(
+          () => PostsRepositoryImpl(
+            internetConnectionChecker: scope
+                .resolve<InternetConnectionChecker>(),
+            remoteDataSource: scope.resolve<PostsRemoteDataSource>(),
+            localDataSource: scope.resolve<PostsLocalDataSource>(),
+            postMapper: scope.resolve<PostMapper>(),
+          ),
+        )
+        .singleton();
   }
 
   void _bindUseCases(Scope scope) {
-    bind<GetPostsUseCase>().toProvide(
-      () => GetPostsUseCase(repository: scope.resolve<PostsRepository>()),
-    );
+    bind<GetPostsUseCase>()
+        .toProvide(
+          () => GetPostsUseCase(repository: scope.resolve<PostsRepository>()),
+        )
+        .singleton();
   }
 }
