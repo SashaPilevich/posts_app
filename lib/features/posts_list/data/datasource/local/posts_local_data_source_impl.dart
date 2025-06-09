@@ -14,7 +14,9 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
 
   @override
   Future<List<PostModel>> fetchPosts() async {
-    List<String>? jsonStringList = _sharedPreferences.getStringList(_postsListKey);
+    List<String>? jsonStringList = _sharedPreferences.getStringList(
+      _postsListKey,
+    );
 
     if (jsonStringList != null) {
       return jsonStringList
@@ -27,7 +29,9 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
 
   @override
   Future<void> savePosts(List<PostModel> posts) async {
-    List<String> jsonStringList = posts.map((post) => jsonEncode(post.toJson())).toList();
+    List<String> jsonStringList = posts
+        .map((post) => jsonEncode(post.toJson()))
+        .toList();
     await _sharedPreferences.setStringList(_postsListKey, jsonStringList);
   }
 

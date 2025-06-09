@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:posts_app/common/domain/usecase/get_theme_usecase.dart';
 import 'package:posts_app/common/domain/usecase/set_theme_usecase.dart';
+import 'package:posts_app/common/presentation/widgets/app_loader.dart';
 import 'package:provider/provider.dart';
 
 import 'app_di/di_container.dart';
-import 'common/domain/entities/app_theme.dart';
 import 'common/presentation/theme/theme_provider.dart';
 import 'navigation/app_router.dart';
 
@@ -27,15 +27,15 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder:
             (BuildContext context, ThemeProvider themeProvider, Widget? child) {
-              final ThemeMode? themeMode = themeProvider.themeMode;
+              if (themeProvider.themeMode == null) {
+                return const AppLoader();
+              }
               return MaterialApp.router(
                 routerConfig: DIContainer.scope.resolve<AppRouter>().config(),
                 title: 'Posts Test',
-                theme: themeMode?.name == AppTheme.dark.name
-                    ? ThemeData.dark()
-                    : ThemeData.light(),
+                theme: ThemeData.light(),
                 darkTheme: ThemeData.dark(),
-                themeMode: themeMode,
+                themeMode: themeProvider.themeMode ?? ThemeMode.dark,
               );
             },
       ),
