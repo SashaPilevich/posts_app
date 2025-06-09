@@ -15,12 +15,8 @@ class PostDetailsLocalDataSourceImpl implements PostDetailsLocalDataSource {
 
   @override
   Future<void> savePost(PostModel post) async {
-    try {
-      String jsonStringPost = jsonEncode(post.toJson());
-      await sharedPreferences.setString(_postKey, jsonStringPost);
-    } catch (_) {
-      throw CacheException();
-    }
+    String jsonStringPost = jsonEncode(post.toJson());
+    await sharedPreferences.setString(_postKey, jsonStringPost);
   }
 
   @override
@@ -35,7 +31,6 @@ class PostDetailsLocalDataSourceImpl implements PostDetailsLocalDataSource {
 
   @override
   Future<bool> hasPost() async {
-    return sharedPreferences.containsKey(_postKey) &&
-        sharedPreferences.getString(_postKey) != null;
+    return sharedPreferences.containsKey(_postKey) && sharedPreferences.getString(_postKey) != null;
   }
 }

@@ -14,32 +14,21 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
 
   @override
   Future<List<PostModel>> fetchPosts() async {
-    try {
-      List<String>? jsonStringList = _sharedPreferences.getStringList(
-        _postsListKey,
-      );
+    List<String>? jsonStringList = _sharedPreferences.getStringList(_postsListKey);
 
-      if (jsonStringList != null) {
-        return jsonStringList
-            .map((jsonString) => PostModel.fromJson(jsonDecode(jsonString)))
-            .toList();
-      }
-      return [];
-    } catch (_) {
+    if (jsonStringList != null) {
+      return jsonStringList
+          .map((jsonString) => PostModel.fromJson(jsonDecode(jsonString)))
+          .toList();
+    } else {
       throw CacheException();
     }
   }
 
   @override
   Future<void> savePosts(List<PostModel> posts) async {
-    try {
-      List<String> jsonStringList = posts
-          .map((post) => jsonEncode(post.toJson()))
-          .toList();
-      await _sharedPreferences.setStringList(_postsListKey, jsonStringList);
-    } catch (_) {
-      throw CacheException();
-    }
+    List<String> jsonStringList = posts.map((post) => jsonEncode(post.toJson())).toList();
+    await _sharedPreferences.setStringList(_postsListKey, jsonStringList);
   }
 
   @override

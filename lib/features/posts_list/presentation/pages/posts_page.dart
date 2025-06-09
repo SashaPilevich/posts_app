@@ -6,6 +6,8 @@ import 'package:posts_app/features/posts_list/domain/usecase/get_posts_list_usec
 import 'package:posts_app/features/posts_list/presentation/bloc/posts_bloc.dart';
 import 'package:posts_app/features/posts_list/presentation/widgets/posts_content.dart';
 
+import '../../../../navigation/app_router.dart';
+
 @RoutePage()
 class PostsPage extends StatelessWidget {
   const PostsPage({super.key});
@@ -13,9 +15,10 @@ class PostsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PostsBloc>(
-      create: (BuildContext context) {
+      create: (_) {
         return PostsBloc(
           getPostsUseCase: DIContainer.scope.resolve<GetPostsUseCase>(),
+          appRouter: DIContainer.scope.resolve<AppRouter>(),
         );
       },
       child: PostsContent(),

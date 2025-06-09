@@ -5,6 +5,11 @@ abstract class PostDetailsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitEvent extends PostDetailsEvent {}
+class InitEvent extends PostDetailsEvent {
+  final int postId;
 
-class PopEvent extends PostDetailsEvent {}
+  InitEvent({required this.postId});
+
+  @override
+  List<Object?> get props => [postId];
+}

@@ -41,9 +41,7 @@ class PostDetailsDiModule extends Module {
     );
 
     bind<PostDetailsLocalDataSource>().toProvide(
-      () => PostDetailsLocalDataSourceImpl(
-        sharedPreferences: scope.resolve<SharedPreferences>(),
-      ),
+      () => PostDetailsLocalDataSourceImpl(sharedPreferences: scope.resolve<SharedPreferences>()),
     );
   }
 
@@ -60,9 +58,7 @@ class PostDetailsDiModule extends Module {
 
   void _bindUseCases(Scope scope) {
     bind<GetPostDetailsUseCase>().toProvide(
-      () => GetPostDetailsUseCase(
-        repository: scope.resolve<PostDetailsRepository>(),
-      ),
+      () => GetPostDetailsUseCase(repository: scope.resolve<PostDetailsRepository>()),
     );
   }
 }
